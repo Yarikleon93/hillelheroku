@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+  <title>{{ title }}</title>
+</head>
+<body>
+  <table>
+    {{#rows}}
+    <tr>
+      <td>{{ number }}</td>
+      <td><a href="/homeworks/{{ id }}">{{ title }}</a></td>
+    </tr>
+    {{/rows}}
+  </table>
+</body>
+</html>
