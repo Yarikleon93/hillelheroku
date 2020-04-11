@@ -19,5 +19,8 @@
   },
   "dependencies": {
     "mustache": "4.0.1"
+  },
+  "engines": {
+    "node": "13.7.x"
   }
 }
