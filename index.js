@@ -19,6 +19,7 @@ async function loadTemplates() {
 
 /**
  * @param {http.IncomingMessage} req
+ * @retruns {string}
  */
 const readBody = (req) => {
   return new Promise((resolve, reject) => {
@@ -97,6 +98,9 @@ const requestListener = async (req, res) => {
   res.end();
 };
 
+/**
+ * асинхронная функция main добавлена для возможности использования await
+ */
 async function main() {
   await loadTemplates();
   const server = http.createServer(requestListener);
