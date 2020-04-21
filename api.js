@@ -33,6 +33,7 @@ export async function apiRequestHandler(req, res) {
     const headers = {
       'content-type': 'application/json; charset=utf-8',
       'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, POST, PATCH, PUT, DELETE, OPTIONS',
       'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept'
     };
 
@@ -68,6 +69,9 @@ export async function apiRequestHandler(req, res) {
 
   if (id) {
     switch (req.method) {
+    case 'OPTIONS' :
+      send(200, 'OK');
+      return;
     case 'GET': {
       const item = await collection.findOne({ id });
       if (item) {
@@ -89,7 +93,7 @@ export async function apiRequestHandler(req, res) {
     }
     case 'DELETE':
       await collection.deleteOne(id);
-      send(200);
+      send(200, 'OK');
       return;
     }
   }
