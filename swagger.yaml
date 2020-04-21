@@ -1,0 +1,119 @@
+---
+swagger: "2.0"
+info:
+  description: This is a simple API
+  version: 1.0.0
+  title: Simple Inventory API
+  contact:
+    email: you@your-company.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+schemes:
+- https
+- http
+paths:
+  /api/homeworks:
+    get:
+      description: |
+        By passing in the appropriate options, you can search for
+        available inventory in the system
+      produces:
+      - application/json
+      parameters: []
+      responses:
+        "200":
+          description: search results matching criteria
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/HomeworkItem'
+        "400":
+          description: bad input parameter
+    post:
+      summary: adds an inventory item
+      description: Adds an item to the system
+      operationId: addInventory
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: inventoryItem
+        description: Inventory item to add
+        required: false
+        schema:
+          $ref: '#/definitions/NewHomeworkItem'
+      responses:
+        "200":
+          description: item created
+          schema:
+            $ref: '#/definitions/HomeworkItem'
+        "400":
+          description: invalid input, object invalid
+        "409":
+          description: an existing item already exists
+  /api/homeworks/{id}:
+    get:
+      summary: Get a homework by Id
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: string
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: '#/definitions/HomeworkItem'
+    put:
+      summary: Update the homework identified by "id"
+      description: Updates a homework
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+    delete:
+      summary: delete item by id
+      description: removes item by id
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+definitions:
+  NewHomeworkItem:
+    type: object
+    required:
+    - description
+    - number
+    - title
+    properties:
+      number:
+        type: number
+        minimum: 0
+      title:
+        type: string
+        example: A homework
+      description:
+        type: string
+        example: A sample homework description
+  HomeworkItem:
+    allOf:
+    - type: object
+      properties:
+        id:
+          type: string
+          format: string
+          example: d290f1ee6c544b0190e6d701748f0851
+          minLength: 24
+          maxLength: 24
+    - $ref: '#/definitions/NewHomeworkItem'

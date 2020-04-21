@@ -1,8 +1,8 @@
 import * as http from 'http';
 import { Collection } from './collection.js';
 import { promises as fsp } from 'fs';
-import { parse } from 'querystring';
 import Mustache from 'mustache';
+import { apiRequestHandler, readBody } from './api.js';
 
 const PORT = process.env.PORT || 5000;
 const collection = new Collection('homeworks');
@@ -19,29 +19,14 @@ async function loadTemplates() {
 
 /**
  * @param {http.IncomingMessage} req
- * @retruns {string}
- */
-const readBody = (req) => {
-  return new Promise((resolve, reject) => {
-
-    let body = '';
-    req.on('data', data => {
-      body = body + data.toString('utf8');
-    });
-
-    req.on('end', async () => {
-      resolve(parse(body));
-    });
-
-    req.on('error', error => reject(error));
-  });
-};
-
-/**
- * @param {http.IncomingMessage} req
  * @param {http.ServerResponse} res
  */
 const requestListener = async (req, res) => {
+
+  if (req.url.startsWith('/api/')) {
+    apiRequestHandler(req, res);
+    return;
+  }
 
   const send = (status, data) => {
     res.writeHead(status);
